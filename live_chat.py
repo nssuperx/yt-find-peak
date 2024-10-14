@@ -8,7 +8,7 @@ def main():
     file = pathlib.Path(sys.argv[1])
     point = int(sys.argv[2]) if len(sys.argv) > 2 else 5
     peak_time_sec = yfp.find_peak_live_chat(str(file).rstrip("".join(file.suffixes)), point)
-    yfpu.print_time(peak_time_sec)
+    yfpu.print_time(sorted(peak_time_sec))
 
 
 if __name__ == "__main__":

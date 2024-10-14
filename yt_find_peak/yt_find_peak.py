@@ -19,10 +19,9 @@ def find_peak_sound(filename: str, point: int) -> tuple[int, ...]:
     percentile_height = np.percentile(sound_l_abs, 99.9)
     peaks, _ = find_peaks(sound_l_abs, height=percentile_height, distance=rate * 60)
 
-    # 大きい順で並び替えて時間順にする
+    # ピーク値が大きい順にする
     desc = np.argsort(sound_l_abs[peaks])[::-1]
-    chronological = np.sort(peaks[desc][:point])
-    return tuple(int(i) for i in (chronological // rate))
+    return tuple(int(i) for i in (peaks[desc][:point] // rate))
 
 
 def find_peak_live_chat(filename: str, point: int) -> tuple[int, ...]:
@@ -53,7 +52,6 @@ def find_peak_live_chat(filename: str, point: int) -> tuple[int, ...]:
     np.add.at(counts, timestamps - 1, 1)
     peaks, _ = find_peaks(counts, distance=60)
 
-    # 大きい順で並び替えて時間順にする
+    # ピーク値が大きい順にする
     desc = np.argsort(counts[peaks])[::-1]
-    chronological = np.sort(peaks[desc][:point])
-    return tuple(int(i) for i in chronological)
+    return tuple(int(i) for i in peaks[desc][:point])
