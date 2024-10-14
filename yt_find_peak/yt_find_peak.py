@@ -48,8 +48,8 @@ def find_peak_live_chat(filename: str, point: int) -> tuple[int, ...]:
     timestamps = timestamps.astype(np.int32)
 
     # 1秒ごとのチャット数をカウントしてピーク出す
-    counts = np.zeros(timestamps[-1], dtype=np.int32)
-    np.add.at(counts, timestamps - 1, 1)
+    counts = np.zeros(timestamps[-1] + 1, dtype=np.int32)
+    np.add.at(counts, timestamps, 1)
     peaks, _ = find_peaks(counts, distance=60)
 
     # ピーク値が大きい順にする
