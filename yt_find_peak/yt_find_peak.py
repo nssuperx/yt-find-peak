@@ -15,13 +15,19 @@ def find_peak_sound(filename: str, point: int) -> tuple[int, ...]:
         tuple[int, ...]: 音量が大きい時刻
     """
     rate, sound = wavfile.read(f"{filename}.wav")
-    sound_l_abs = np.abs(sound[:, 0])
-    percentile_height = np.percentile(sound_l_abs, 99.9)
-    peaks, _ = find_peaks(sound_l_abs, height=percentile_height, distance=rate * 60)
+    # 後で適当に足すので、int64にする
+    sound = sound.astype(np.int64)
+    sound = sound[(sound.shape[0] % rate) // 2 : -(sound.shape[0] % rate) // 2]
+    # 左右の音を足す
+    sound = np.abs(sound[:, 0]) + np.abs(sound[:, 1])
+    # rateずつ分けて足す（適当に平均化してる）
+    sound = sound.reshape((-1, rate)).sum(axis=1)
+    percentile_height = np.percentile(sound, 97)
+    peaks, _ = find_peaks(sound, height=percentile_height, distance=60)
 
     # ピーク値が大きい順にする
-    desc = np.argsort(sound_l_abs[peaks])[::-1]
-    return tuple(int(i) for i in (peaks[desc][:point] // rate))
+    desc = np.argsort(sound[peaks])[::-1]
+    return tuple(int(i) for i in (peaks[desc][:point]))
 
 
 def find_peak_live_chat(filename: str, point: int) -> tuple[int, ...]:
