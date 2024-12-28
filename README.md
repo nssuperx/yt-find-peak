@@ -19,6 +19,12 @@ uv sync --no-dev
 python live_chat.py '<動画名>.live_chat.json' 10
 ```
 
+または
+
+```bash
+uv run --no-dev live_chat.py '<動画名>.live_chat.json' 10
+```
+
 ```text
 time    seconds 30fps   60fps
 0:08:08 488     14640   29280
