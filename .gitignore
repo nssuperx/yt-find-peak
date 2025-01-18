@@ -22,11 +22,8 @@ wheels/
 *.mkv
 *.webm
 
-# tmp file
-*.csv
-*.txt
-*.json
-tmp_*
+# tmp dir
+tmp
 
 # lock file
 uv.lock
